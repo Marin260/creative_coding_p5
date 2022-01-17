@@ -8,7 +8,7 @@ function windowResized() {
 
 function draw() {
   if (mouseIsPressed) {
-    fill(0);
+    fill(6);
   } else {
     fill(255);
   }
