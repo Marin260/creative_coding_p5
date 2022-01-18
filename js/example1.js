@@ -1,34 +1,49 @@
 let unsorted = [];
 let i = 0;
+let j = 1; // for insertion sort
 let sorting = false;
+let radio;
+let button;
+let reset;
+let slider;
+let sliderVal;
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight); // setting the canvas to the screen size
   for(let i = 0; i < width; i++){
-    unsorted.push(Math.floor(Math.random() * height));
-    //unsorted.push(noise(i/100.0)*height);
+    unsorted.push(Math.floor(Math.random() * height)); //generate rand numbers
+    //unsorted.push(noise(i/100.0)*height); //use perlin noise
   }
+  //radio buttons
   radio = createRadio();
-  radio.position(width - 100, 70)
-  radio.option(1, '&nbsp;Bubble&nbsp;');
+  radio.position(width - 140, 158);
+  radio.option(1, '&nbsp;Bubble&nbsp;&nbsp;');
   radio.option(2, '&nbsp;Selection');
   radio.option(3, '&nbsp;Insertion');
   radio.option(4, '&nbsp;Quick&nbsp;&nbsp;&nbsp;&nbsp;');
   radio.option(5, '&nbsp;Merge');
-  //radio.style('display', 'block');
-  radio.style('width', '84px');
+  radio.class("bg-transparent bg-white text-stone-700 font-semibold py-2 px-4 border border-stone-500 rounded");
+  radio.style('width', '123px');
   radio.style('background-color', 'white');
   textAlign(CENTER);
 
-  button = createButton('&nbsp;SORT &nbsp;');
+  //sort button
+  button = createButton('SORT');
   button.class("bg-transparent bg-white hover:bg-gray-500 text-stone-700 font-semibold hover:text-white py-2 px-4 border border-stone-500 hover:border-transparent rounded")
-  
-  //button.style('background-color', 'white');
   button.position(width - 100, 32);
   button.mousePressed(startSort);
   
-  
-  //frameRate(30);
+  //reset button
+  reset = createButton('RESET');
+  reset.class("bg-transparent bg-white hover:bg-gray-500 text-stone-700 font-semibold hover:text-white py-2 px-4 border border-stone-500 hover:border-transparent rounded")
+  reset.position(width - 100, 96);
+  reset.mousePressed(resetSort);
+
+  //speed slider
+  slider = createSlider(1, 60, 100);
+  slider.position(60, 100);
+  slider.style('width', '80px');
 }
 
 function windowResized() {
@@ -36,28 +51,51 @@ function windowResized() {
 }
 
 function draw() {
-  background(0);
+  //using the slider value to alter the framerate(speed)
+  sliderVal = slider.value();
+  frameRate(sliderVal);
+  background('#60594d');
+  
+  //sorting alg depends on the radio choice
   let choice = radio.value();
   if (sorting){
-    if (i < unsorted.length){
-      if (choice == 1) bubbleSort();
-      else if (choice == 2) selectionSort();
-    }
-    else{
+    if (i >= unsorted.length || j >= unsorted.length){
+      //stop sorting when sorting done
       fill(255);
       textSize(32);
-      text('Sorting done', 32, 64);
+      text('Sorting done', 100, 64);
+    }
+    else{
+      if (choice == 1) bubbleSort();
+      else if (choice == 2) selectionSort();
+      else if (choice == 3) insertionSort();
     }
   }
   
+  // variables for colors
+  let subdivisions = Math.floor(width/255);
+  let gradientColor = 0;
+
+  //draw the lines
   for (let i = 0; i < unsorted.length; i++){
-    stroke(255);
+    if (i%subdivisions == 0) gradientColor+=1;
+    stroke(254,198,1+gradientColor);
     line(i, height, i, height-unsorted[i]);
   }
 }
 
 function startSort(){
+  //start sorting with the button click
   sorting = !sorting;
+}
+
+function resetSort(){
+  // reset to initial state
+  sorting = false;
+  i = 0;
+  j = 1;
+  unsorted = [];
+  for(let i = 0; i < width; i++) unsorted.push(Math.floor(Math.random() * height));
 }
 
 function swap(arr, a, b){
@@ -70,7 +108,7 @@ function bubbleSort(){
   //for (let i = 0; i < unsorted.length; i++){
     for (let j = 0; j < unsorted.length-1; j++){
       if (unsorted[j] > unsorted[j+1]){
-        // swap(unsorted, j, j+1);
+        //swap(unsorted, j, j+1);
         let tmp = unsorted[j];
         unsorted[j] = unsorted[j+1];
         unsorted[j+1] = tmp;
@@ -93,7 +131,15 @@ function selectionSort(){
 }
 
 function insertionSort(){
+  let k = unsorted[j];
+  let z = j -1;
 
+  while(k < unsorted[z] && z >= 0){
+    unsorted[z+1] = unsorted[z];
+    --z;
+  }
+  unsorted[z+1] = k;
+  j+=1;
 }
 
 function quickSort(){
