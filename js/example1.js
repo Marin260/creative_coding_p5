@@ -12,6 +12,17 @@ let reset;
 let slider;
 let sliderVal;
 
+//background field vars
+let increment = 0.1;
+let scl = 10;
+let cols, rows;
+let zoff = 0;
+let fr;
+
+let particle = [];
+
+let field = [];
+
 
 
 function setup() {
@@ -45,8 +56,6 @@ function setup() {
   order.attribute('name', 'second')
   textAlign(CENTER);
 
-
-
   //sort button
   button = createButton('SORT');
   button.class("bg-transparent bg-white hover:bg-gray-500 text-stone-700 font-semibold hover:text-white py-2 px-4 border border-stone-500 hover:border-transparent rounded")
@@ -70,10 +79,11 @@ function windowResized() {
 }
 
 function draw() {
+  background('#60594d'); //reset background
   //using the slider value to alter the framerate(speed)
   sliderVal = slider.value();
   frameRate(sliderVal);
-  background('#60594d');
+  //background('#60594d');
 
   //sorting alg depends on the radio choice
   let choice = radio.value();
@@ -133,9 +143,9 @@ function swap(arr, a, b) {
 function bubbleSort() {
   //for (let i = 0; i < unsorted.length; i++){
   for (let j = 0; j < unsorted.length - 1; j++) {
-    if (order.value() == 1) {
+    if (order.value() == 2) {
       console.log(order.value())
-      if (unsorted[j] > unsorted[j + 1]) {
+      if (unsorted[j] < unsorted[j + 1]) {
         //swap(unsorted, j, j+1);
         let tmp = unsorted[j];
         unsorted[j] = unsorted[j + 1];
@@ -143,7 +153,7 @@ function bubbleSort() {
       }
     }
     else {
-      if (unsorted[j] < unsorted[j + 1]) {
+      if (unsorted[j] > unsorted[j + 1]) {
         //swap(unsorted, j, j+1);
         let tmp = unsorted[j];
         unsorted[j] = unsorted[j + 1];
@@ -159,11 +169,11 @@ function selectionSort() {
   min_ind = i;
   console.log(min_ind)
   for (let j = i + 1; j < unsorted.length; j++) {
-    if (order.value() == 1) {
-      if (unsorted[j] < unsorted[min_ind]) min_ind = j;
+    if (order.value() == 2) {
+      if (unsorted[j] > unsorted[min_ind]) min_ind = j;
     }
     else {
-      if (unsorted[j] > unsorted[min_ind]) min_ind = j;
+      if (unsorted[j] < unsorted[min_ind]) min_ind = j;
     }
   }
   let tmp = unsorted[min_ind];
@@ -175,14 +185,14 @@ function selectionSort() {
 function insertionSort() {
   let k = unsorted[j];
   let z = j - 1;
-  if (order.value() == 1) {
-    while (k < unsorted[z] && z >= 0) {
+  if (order.value() == 2) {
+    while (k > unsorted[z] && z >= 0) {
       unsorted[z + 1] = unsorted[z];
       --z;
     }
   }
   else {
-    while (k > unsorted[z] && z >= 0) {
+    while (k < unsorted[z] && z >= 0) {
       unsorted[z + 1] = unsorted[z];
       --z;
     }
