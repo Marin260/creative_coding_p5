@@ -11,7 +11,8 @@ let field = [];
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
-  createCanvas(700, 700); // setting the canvas to the screen size
+  let cnv = createCanvas(700, 700); // setting the canvas to the screen size
+  cnv.position(windowWidth/2-350, windowHeight/2-350);
   cols = floor(width/scl);
   rows = floor(height/scl);
 
@@ -25,9 +26,9 @@ function setup() {
   background(0);
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight); // auto resize as the window resizes
-}
+// function windowResized() {
+//   resizeCanvas(windowWidth, windowHeight); // auto resize as the window resizes
+// }
 
 function draw() {
   
