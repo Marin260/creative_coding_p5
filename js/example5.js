@@ -1,5 +1,7 @@
 function setup() {
-  createCanvas(windowWidth, windowHeight); // setting the canvas to the screen size
+  // let size = windowWidth > windowHeight ? windowHeight : windowWidth;
+  // createCanvas(size, size); // setting the canvas to the screen size
+  createCanvas(windowWidth, windowHeight);
   noStroke();
   colorMode(HSB);
   drawBrot();
