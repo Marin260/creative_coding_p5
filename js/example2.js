@@ -16,10 +16,11 @@ let button;
 
 let displayState = 1;
 
+let inpR, inpG, inpB;
 
 
 function setup() {
-  //createCanvas(windowWidth, windowHeight);
+  //let cnv = createCanvas(windowWidth, windowHeight);
   let cnv = createCanvas(700, 700); // setting the canvas to the screen size
   cnv.position(windowWidth/2-350, windowHeight/2-350);
   cols = floor(width/scl);
@@ -45,15 +46,35 @@ function setup() {
 
 
   //inputs
-  let inp = createInput('0', 'number');
-  inp.style('background-color', 'black');
-  inp.style('color', 'white');
-  inp.position(xPosElem, windowHeight/2);
-  inp.attribute("max", "255");
-  inp.attribute("min", "0");
-  inp.class("block text-gray-700 text-sm font-bold mb-2");
-  inp.size(50);
-  inp.input(myInputEvent);
+  inpR = createInput('255', 'number');
+  inpR.style('background-color', 'white');
+  inpR.style('color', 'black');
+  inpR.position(xPosElem, windowHeight/2);
+  inpR.attribute("max", "255");
+  inpR.attribute("min", "0");
+  inpR.class("block text-gray-700 text-sm font-bold mb-2");
+  inpR.size(50);
+  inpR.input(rColor);
+
+  inpG = createInput('255', 'number');
+  inpG.style('background-color', 'white');
+  inpG.style('color', 'black');
+  inpG.position(xPosElem, windowHeight/2+50);
+  inpG.attribute("max", "255");
+  inpG.attribute("min", "0");
+  inpG.class("block text-gray-700 text-sm font-bold mb-2");
+  inpG.size(50);
+  inpG.input(gColor);
+
+  inpB = createInput('255', 'number');
+  inpB.style('background-color', 'white');
+  inpB.style('color', 'black');
+  inpB.position(xPosElem, windowHeight/2+100);
+  inpB.attribute("max", "255");
+  inpB.attribute("min", "0");
+  inpB.class("block text-gray-700 text-sm font-bold mb-2");
+  inpB.size(50);
+  inpB.input(bColor);
 
   //type of display
   display = createRadio();
@@ -98,7 +119,7 @@ function draw() {
 
       if (displayState == 1){
         
-        stroke('rgba(255,255,255,0.25)');
+        stroke(`rgba(${inpR.value()},${inpG.value()},${inpB.value()},0.25)`);
         push();
         translate(j*scl, i*scl);
         rotate(v.heading());
@@ -106,8 +127,6 @@ function draw() {
         line(0, 0, scl, 0);
         pop();
       }
-
-      
     }
     yoff += increment;
     zoff += 0.0003;
@@ -119,7 +138,7 @@ function draw() {
       particle[i].follow(field);
       particle[i].update();
       particle[i].edge();
-      particle[i].show();
+      particle[i].show(inpR.value(), inpG.value(), inpB.value());
       //particle[i].show(0, 0, 0);
       //particle[i].show(r, g, b);
     }
@@ -127,7 +146,13 @@ function draw() {
   //fr.html(floor(frameRate()));
 }
 
-function myInputEvent() {
+function rColor() {
+  console.log('you are typing: ', this.value());
+}
+function gColor() {
+  console.log('you are typing: ', this.value());
+}
+function bColor() {
   console.log('you are typing: ', this.value());
 }
 
@@ -136,10 +161,10 @@ function changeDispay() {
   background(0);
   if(display.value() == 2){
     for (let i = 0; i < particle.length; i++){
-      
       particle[i].reset();
     }
   }
   displayState = display.value();
   console.log(display.value())
+  background(0);
 }

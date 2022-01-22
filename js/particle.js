@@ -7,7 +7,9 @@ function Particle(){
     this.prevPos = this.pos.copy();
     
     this.reset = function(){
+        //reset positions
         this.pos = createVector(random(width), random(height));
+        this.prevPos = this.pos.copy();
     }
 
     this.update = function() {
@@ -31,7 +33,7 @@ function Particle(){
     this.show = function(r,g,b){
         //stroke(color(r, g, b));
         //stroke(color(random(256), random(256), random(256)));
-        stroke('rgba(255,255,255,0.03)');
+        stroke(`rgba(${r},${g},${b},0.03)`);
         strokeWeight(0.2);
         line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
         //point(this.pos.x, this.pos.y);
