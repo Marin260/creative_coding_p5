@@ -31,12 +31,9 @@ function Particle(){
         this.acc.add(force);
     }
     this.show = function(r,g,b){
-        //stroke(color(r, g, b));
-        //stroke(color(random(256), random(256), random(256)));
         stroke(`rgba(${r},${g},${b},0.03)`);
         strokeWeight(0.2);
         line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
-        //point(this.pos.x, this.pos.y);
         this.updatePostion();
     }
 
@@ -63,9 +60,4 @@ function Particle(){
             this.updatePostion();
         }
     }
-
-    this.chSpeed = function(x){
-        this.maxspeed = x;
-    }
-    
 }

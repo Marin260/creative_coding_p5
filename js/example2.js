@@ -17,7 +17,7 @@ let button;
 let displayState = 1;
 
 let inpR, inpG, inpB;
-
+let colorInps = [];
 
 function setup() {
   //let cnv = createCanvas(windowWidth, windowHeight);
@@ -30,6 +30,14 @@ function setup() {
   let xPosElem = windowWidth/2+355; 
 
   //fr = createP('');
+  //text 
+  colorP = createP('Color');
+  colorP.style('color', 'white')
+  colorP.position(xPosElem, windowHeight/2-30);
+
+  angleSlideP = createP('Angle multiplier');
+  angleSlideP.style('color', 'white')
+  angleSlideP.position(xPosElem, windowHeight/2+100);
 
   //create particles
   field = new Array(cols * rows);
@@ -39,42 +47,23 @@ function setup() {
   }
   background(0);
 
-  //speed slider
-  // slider = createSlider(0.2, 10, 100);
-  // slider.position(30, 100);
-  // slider.style('width', '80px');
+  //angle multiplier slider
+  slider = createSlider(1, 20, 4);
+  slider.position(xPosElem, windowHeight/2+130);
+  //slider.style('width', '80px');
 
 
   //inputs
-  inpR = createInput('255', 'number');
-  inpR.style('background-color', 'white');
-  inpR.style('color', 'black');
-  inpR.position(xPosElem, windowHeight/2);
-  inpR.attribute("max", "255");
-  inpR.attribute("min", "0");
-  inpR.class("block text-gray-700 text-sm font-bold mb-2");
-  inpR.size(50);
-  inpR.input(rColor);
-
-  inpG = createInput('255', 'number');
-  inpG.style('background-color', 'white');
-  inpG.style('color', 'black');
-  inpG.position(xPosElem, windowHeight/2+50);
-  inpG.attribute("max", "255");
-  inpG.attribute("min", "0");
-  inpG.class("block text-gray-700 text-sm font-bold mb-2");
-  inpG.size(50);
-  inpG.input(gColor);
-
-  inpB = createInput('255', 'number');
-  inpB.style('background-color', 'white');
-  inpB.style('color', 'black');
-  inpB.position(xPosElem, windowHeight/2+100);
-  inpB.attribute("max", "255");
-  inpB.attribute("min", "0");
-  inpB.class("block text-gray-700 text-sm font-bold mb-2");
-  inpB.size(50);
-  inpB.input(bColor);
+  for (let i = 0; i < 3; i++){
+    colorInps[i] = createInput('255', 'number');
+    colorInps[i].style('background-color', 'white');
+    colorInps[i].style('color', 'black');
+    colorInps[i].position(xPosElem, windowHeight/2+(i*30));
+    colorInps[i].attribute("max", "255");
+    colorInps[i].attribute("min", "0");
+    colorInps[i].class("block text-gray-700 text-sm font-bold mb-2");
+  }
+  
 
   //type of display
   display = createRadio();
@@ -84,7 +73,7 @@ function setup() {
   display.class("bg-transparent bg-white text-stone-700 font-semibold py-2 px-4 border border-stone-500 rounded");
   display.style('width', '150px');
   display.style('background-color', 'white');
-  display.attribute('name', 'second')
+  display.attribute('name', 'first')
   textAlign(CENTER);
 
   //show display button
@@ -99,27 +88,22 @@ function setup() {
 // }
 
 function draw() {
-  // sliderVal = slider.value();
-  // frameRate(sliderVal);
+  sliderVal = slider.value();
   if (displayState == 1) { background(0);}
   
   let yoff = 0;
-  let r = random(256);
-  let g = random(256);
-  let b = random(256);
   for (let i = 0; i < rows; i++){
     let xoff = 0;
     for (let j = 0; j < cols; j++){
       let index = (i+j * cols);
       field[index] = v;
-      var angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
+      var angle = noise(xoff, yoff, zoff) * TWO_PI * sliderVal;
       var v = p5.Vector.fromAngle(angle);
       v.setMag(1);
       xoff += increment;
 
       if (displayState == 1){
-        
-        stroke(`rgba(${inpR.value()},${inpG.value()},${inpB.value()},0.25)`);
+        stroke(`rgba(${colorInps[0].value()},${colorInps[1].value()},${colorInps[1].value()},0.25)`);
         push();
         translate(j*scl, i*scl);
         rotate(v.heading());
@@ -132,28 +116,16 @@ function draw() {
     zoff += 0.0003;
   }
 
+
   if (displayState != 1){
     for (let i = 0; i < particle.length; i++){
-      //particle[i].chSpeed(sliderVal);
       particle[i].follow(field);
       particle[i].update();
       particle[i].edge();
-      particle[i].show(inpR.value(), inpG.value(), inpB.value());
-      //particle[i].show(0, 0, 0);
-      //particle[i].show(r, g, b);
+      particle[i].show(colorInps[0].value(), colorInps[1].value(), colorInps[2].value());
     }
   }
   //fr.html(floor(frameRate()));
-}
-
-function rColor() {
-  console.log('you are typing: ', this.value());
-}
-function gColor() {
-  console.log('you are typing: ', this.value());
-}
-function bColor() {
-  console.log('you are typing: ', this.value());
 }
 
 function changeDispay() {
@@ -165,6 +137,4 @@ function changeDispay() {
     }
   }
   displayState = display.value();
-  console.log(display.value())
-  background(0);
 }
