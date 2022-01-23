@@ -1,5 +1,5 @@
 let increment = 0.05;
-let scl = 10;
+let scl = 20;
 let cols, rows;
 let zoff = 0;
 //let fr;
@@ -21,13 +21,13 @@ let colorInps = [];
 
 function setup() {
   //let cnv = createCanvas(windowWidth, windowHeight);
-  let cnv = createCanvas(700, 700); // setting the canvas to the screen size
-  cnv.position(windowWidth/2-350, windowHeight/2-350);
+  let cnv = createCanvas(800, 800); // setting the canvas to the screen size
+  cnv.position(windowWidth/2-400, windowHeight/2-400);
   cols = floor(width/scl);
   rows = floor(height/scl);
 
   //screen position
-  let xPosElem = windowWidth/2+355; 
+  let xPosElem = windowWidth/2+405; 
 
   //fr = createP('');
   //text 
@@ -42,7 +42,7 @@ function setup() {
   //create particles
   field = new Array(cols * rows);
 
-  for (let i = 0; i < 10000; i++){
+  for (let i = 0; i < 2500; i++){
     particle[i] = new Particle();
   }
   background(0);
