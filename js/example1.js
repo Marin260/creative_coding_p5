@@ -37,7 +37,7 @@ function setup() {
   radio.option(1, '&nbsp;Bubble&nbsp;&nbsp;');
   radio.option(2, '&nbsp;Selection');
   radio.option(3, '&nbsp;Insertion');
-  radio.option(4, '&nbsp;Quick&nbsp;&nbsp;&nbsp;&nbsp;');
+  radio.option(4, '&nbsp;Quick&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
   radio.option(5, '&nbsp;Merge');
   radio.selected(1);
   radio.class("bg-transparent bg-white text-stone-700 font-semibold py-2 px-4 border border-stone-500 rounded");
@@ -100,6 +100,8 @@ function draw() {
       if (choice == 1) bubbleSort();
       else if (choice == 2) selectionSort();
       else if (choice == 3) insertionSort();
+      else if (choice == 4) quickSort();
+      else if (choice == 5) mergesort();
       fill(255);
       textSize(32);
       text('Sorting timer: ' + (timeSorting / 1000).toFixed(2), 30, 64);
@@ -144,7 +146,6 @@ function bubbleSort() {
   //for (let i = 0; i < unsorted.length; i++){
   for (let j = 0; j < unsorted.length - 1; j++) {
     if (order.value() == 2) {
-      console.log(order.value())
       if (unsorted[j] < unsorted[j + 1]) {
         //swap(unsorted, j, j+1);
         let tmp = unsorted[j];
@@ -167,7 +168,6 @@ function bubbleSort() {
 
 function selectionSort() {
   min_ind = i;
-  console.log(min_ind)
   for (let j = i + 1; j < unsorted.length; j++) {
     if (order.value() == 2) {
       if (unsorted[j] > unsorted[min_ind]) min_ind = j;
@@ -202,11 +202,13 @@ function insertionSort() {
 }
 
 function quickSort() {
-
+  alert("Coming soon. Not yet implemented");
+  sorting = false;
 }
 
 function mergesort() {
-
+  alert("Coming soon. Not yet implemented");
+  sorting = false;
 }
 
 
